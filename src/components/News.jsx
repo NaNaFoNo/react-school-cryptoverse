@@ -4,8 +4,10 @@ import moment from 'moment';
 
 import { useGetCryptoNewsQuery } from '../services/cryptoNewsApi';
 
-const { text, Title } = Typography;
+const { Text, Title } = Typography;
 const { Option } = Select;
+
+const demoImage = 'https://picsum.photos/420/320?image=0';
  
 const News = ({ simplified }) => {
     const count = simplified ? 6 : 12;
@@ -21,7 +23,26 @@ const News = ({ simplified }) => {
                         <a href={news.url} target="_blank" rel="noreferrer">
                             <div className="news-image-container">
                                 <Title level={4} className="news-title">{news.name}</Title>
+                                <img
+                                    style={{ maxWidth: '200px', maxHeight: '100px'}}
+                                    src={news?.image?.thumbnail?.contentUrl || demoImage }
+                                    alt="news"
+                                />
                             </div>
+                            <p>
+                                {news.description > 100
+                                    ? `${news.description.substring(0, 100)}...`
+                                    : news.description 
+                                }
+                            </p>
+                            <div className="provider-container">
+                                <div>
+                                    <Avatar src={news.provider[0]?.image?.thumbnail.contentUrl || demoImage } alt=""/>
+                                    <Text className="provider-name">{news.provider[0]?.name}</Text>
+                                </div>
+                                <Text>{moment(news.datePublished).startOf('ss').fromNow()}</Text>
+                            </div>
+                            
                         </a>
                     </Card>
                 </Col>
